@@ -34,9 +34,20 @@ public class View {
         return inputInt("ingrese la edad");
     }
 
-    public int inputInt(String message){
+    public String inputInt(String message){
         System.out.println("Ingrese la edad: ");
         return scanner.nextInt();
+    }
+
+    
+
+    public int selecSortingMethods(){
+        System.out.println("****ingresse la condicion a ordenar***");
+        System.out.println("1. por nombre");
+        System.out.println("2. por edad ");
+        System.out.println("Ingresar una opcion: ");
+        return scanner.nextInt();
+    
     }
     
 }

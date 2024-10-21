@@ -15,7 +15,7 @@ public class Controller {
         this.sortingMethods = sortingMethods;
         this.searchMethods = searchMethods;
         
-      System.out.println(Iniciando);
+      System.out.println("Iniciando");
 
       public void star (){
         int option = 0;
@@ -23,11 +23,13 @@ public class Controller {
             option = view.showMenu();
             switch (option) {
                 case 1:
-                    inputPersons()
+                    inputPersons();
                    break;
                 case 2:
-                    addPerson()
+                    addPerson();
                    break;
+                case 3:
+                   sortPerson
                 case 100:
                    System.out.println("ADIOS");
                    break;
@@ -35,18 +37,52 @@ public class Controller {
                 System.out.println("ingrese otra opcion");
                    
             }
-        }while (opcion !=0);
+        }while (option !=0);
+    }
+
+    private void sortPerson(){
+        int sortingOption = view.selectSortingMethods();
+        if (sortingOpcion == 1){
+            sortingMethods.sortByNameWithBuble(personas);
+        }else if (sorting ==2){
+            sortingMethods.sortByNameWithSelecction(personas);
+        } else {
+            sortingMethods.sortByNameWithBuble(personas);
+
+        }
     }
 
     public void inputPersons(){
     int numeroPersonas = view.inputInt("INGRESE EL NUMERO DE PERSONAS: ");
-    personas = new person[numeroPersonas];
+    personas = new Person[numeroPersonas];
     for (int i =0; i<numeroPersonas; i++){
         personas[i] = view.inputPerson();
       }
     }
 
     public void addPerson(){
+        view.showsMesagge("NO EXISTE EL MENSAKE");
+        inputPersons();
+        if (person == null){
+            inputPersons();
+        }else{
+        
         int numeroPersonas = view.inputInt("INGRESE EL NUMERO DE PERSONAS a adicionar: ");
+
+        Person[] personasTotales= new Person[personas.length + numeroPersonas];
+
+        for (int i = 0; i < persona.length; i++){
+            personasTotales[i]=personas[i];
+        }
+
+        for (int i = personas.length; i < personasTotales; i++){
+            personas[i] = view.inputPerson();
+
+        }
+    }
+
+        personas = personasTotales
   } 
+
+  
 }
