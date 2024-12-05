@@ -1,6 +1,6 @@
 package Controller;
 
-import Models.Person;
+import models.Person;
 
 public class SortingMethods {
     public void sortByNameWithBubble(Person[] personas) {

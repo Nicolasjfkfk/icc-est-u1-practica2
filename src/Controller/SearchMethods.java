@@ -1,6 +1,6 @@
 package Controller;
 
-import Models.Person;
+import models.Person;
 
 public class SearchMethods {
      public Person binarySearchByAge(Person[] personas, int age) {

@@ -1,7 +1,7 @@
 package Controller;
 
-import Models.Person;
 import View.View;
+import models.Person;
 
 public class Controller {
     private View view;
