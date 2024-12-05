@@ -1,7 +1,7 @@
 package Controller;
 
-import models.Person;
-import Views.View;
+import Models.Person;
+import View.View;
 
 public class Controller {
     private View view;
@@ -17,7 +17,7 @@ public class Controller {
     }
 
     public void start() {
-        int option = 0;
+        int option;
         do {
             option = view.showMenu();
             switch (option) {
@@ -28,60 +28,84 @@ public class Controller {
                     addPerson();
                     break;
                 case 3:
-                    sortPerson();
+                    sortPersons();
+                    break;
+                case 4:
+                    searchPerson();
                     break;
                 case 100:
-                    System.out.println("ADIOS");
-                    option = 0; // Para salir del bucle
+                    view.showMessage("¡Hasta luego!");
                     break;
                 default:
-                    System.out.println("Ingrese otra opcion");
+                    view.showMessage("Opción inválida. Por favor, ingrese una opción válida.");
             }
-        } while (option != 0);
+        } while (option != 100);
     }
 
-    private void sortPerson() {
-        if (personas == null || personas.length == 0) {
-            view.showMessage("No hay personas para ordenar");
-            return;
-        }
-        int sortingOption = view.selectSortingMethods();
+    private void sortPersons() {
+        int sortingOption = view.selectSortingMethod();
         if (sortingOption == 1) {
             sortingMethods.sortByNameWithBubble(personas);
         } else if (sortingOption == 2) {
-            sortingMethods.sortByAgeWithSelection(personas);
+            sortingMethods.sortByNameWithSelectionDes(personas);
+        } else if (sortingOption == 3) {
+            sortingMethods.sortByAgeWithInsertion(personas);
+        } else if (sortingOption == 4) {
+            sortingMethods.sortByNameWithInsertion(personas);
+        } else {
+            view.showMessage("Opción inválida. No se realizará ningún ordenamiento.");
+            return;
         }
-        // Mostrar resultado
-        view.showMessage("Personas ordenadas:");
-        for (Person p : personas) {
-            view.showMessage(p.toString());
-        }
+        view.showMessage("Arreglo ordenado:");
+        view.displayPersons(personas);
     }
 
     public void inputPersons() {
-        int numeroPersonas = view.inputInt("INGRESE EL NUMERO DE PERSONAS: ");
+        int numeroPersonas = view.inputInt("Ingrese el número de personas: ");
         personas = new Person[numeroPersonas];
         for (int i = 0; i < numeroPersonas; i++) {
+            view.showMessage("Persona #" + (i + 1));
             personas[i] = view.inputPerson();
         }
     }
 
     public void addPerson() {
         if (personas == null) {
-            view.showMessage("No existe el arreglo de personas");
+            view.showMessage("No existe, ingrese las personas por primera vez");
             inputPersons();
         } else {
-            int numeroPersonas = view.inputInt("INGRESE EL NUMERO DE PERSONAS a adicionar: ");
+            int numeroPersonas = view.inputInt("Ingrese el número de personas a adicionar: ");
             Person[] personasTotales = new Person[personas.length + numeroPersonas];
-            // Copiar personas existentes
-            for (int i = 0; i < personas.length; i++) {
-                personasTotales[i] = personas[i];
-            }
-            // Añadir nuevas personas
+            System.arraycopy(personas, 0, personasTotales, 0, personas.length);
             for (int i = personas.length; i < personasTotales.length; i++) {
+                view.showMessage("Persona #" + (i + 1));
                 personasTotales[i] = view.inputPerson();
             }
             personas = personasTotales;
         }
     }
+
+    private void searchPerson() {
+        int searchOption = view.selectSearchCriterion();
+        if (searchOption == 1) {
+            if (!searchMethods.isSortedByAge(personas)) {
+                view.showMessage("El arreglo no está ordenado por edad. Se procederá a ordenar.");
+                sortingMethods.sortByAgeWithInsertion(personas);
+            }
+            int age = view.inputAge();
+            Person person = searchMethods.binarySearchByAge(personas, age);
+            view.displaySearchResult(person);
+        } else if (searchOption == 2) {
+            if (!searchMethods.isSortedByName(personas)) {
+                view.showMessage("El arreglo no está ordenado por nombre. Se procederá a ordenar.");
+                sortingMethods.sortByNameWithBubble(personas);
+            }
+            String name = view.inputName();
+            Person person = searchMethods.binarySearchByName(personas, name);
+            view.displaySearchResult(person);
+        } else {
+            view.showMessage("Opción inválida. No se realizará ninguna búsqueda.");
+        }
+    }
+    
 }
